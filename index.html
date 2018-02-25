@@ -22,9 +22,11 @@
   <script src="js/systemjs/dist/system.js"></script>
   <script>
     // Required for github-pages
-    SystemJS.config({
-      baseURL: '/Alakajam2'
-    });
+    if (document.URL.indexOf('github.io') !== -1) {
+      SystemJS.config({
+        baseURL: '/Alakajam2'
+      });
+    };
     SystemJS.import('/js/entry.js');
   </script>
 </body>
