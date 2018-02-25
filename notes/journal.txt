@@ -126,3 +126,5 @@ Améliorations UI diverses, message de chargement
 
 Ajout page d'accueil. Difficile sans routeur ! D'autant que je n'ai pas réussi à faire marcher
 le plugin SystemJS de chargement de texte (https://github.com/systemjs/plugin-text)
+
+Le jeu peut être gagné et perdu !

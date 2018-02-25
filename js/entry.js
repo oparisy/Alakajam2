@@ -41,6 +41,9 @@ var surfaceWaterColor = 0x0044ff
 const initNumFishes = 15
 const echoColor = 0x9fff00
 
+const initPingsAvailable = 15
+var pingsLeft = initPingsAvailable
+
 var clock = new THREE.Clock()
 
 var raycaster = new THREE.Raycaster()
@@ -52,6 +55,9 @@ var boatObjects = []
 
 // HTML UI
 var infozone
+
+var won = false
+var lost = false
 
 init()
 animate()
@@ -212,8 +218,11 @@ function animate () {
   }
 
   // Update DOM UI
-  infozone.innerHTML = ''
-  infozone.innerHTML += 'Fishes Left: ' + animals.length
+  if (!won && !lost) {
+    infozone.innerHTML = ''
+    infozone.innerHTML += 'Fishes Left: ' + animals.length + '<br/>'
+    infozone.innerHTML += 'Pings Left: ' + pingsLeft
+  }
 }
 
 function render () {
@@ -291,6 +300,11 @@ function onDocumentTouchStart (event) {
 
 function onBoatClicked () {
   console.log('Boat clicked')
+  if (pingsLeft <= 0) {
+    // Does not mean we've lost, we'll let the last echoes vanish first
+    return
+  }
+
   var time = clock.getElapsedTime()
 
   // Okay, let's compute what the sonar will detect
@@ -314,10 +328,12 @@ function onBoatClicked () {
 
   // Disable orbit rotations (we wan to click on fishes, not move the camera!)
   controls.enableRotate = false
+
+  pingsLeft--
 }
 
 function processPings (time, delta) {
-  let anyPingLeft = false
+  let anyEchoLeft = false
   for (let i = 0; i < animals.length; i++) {
     let animal = animals[i]
 
@@ -330,14 +346,18 @@ function processPings (time, delta) {
       animal.object3D.visible = true
     }
 
+    // Some future echoes will have to be processed, even if not visible yet
+    anyEchoLeft |= animal.pingTime !== undefined
+
     if (animal.intensity > 0) {
+      // An echo was definitely visible
+      anyEchoLeft = true
+
       // Decrease echo intensity since last draw
       animal.intensity -= 0.5 * delta
 
       // Update the material opacity to simulate ping intensity
       animal.object3D.material.opacity = animal.intensity
-
-      anyPingLeft = true
     } else {
       // Avoid the exploitation of a transparency behaviour
       // where near-surface fishes appear black when fully transparent
@@ -346,7 +366,14 @@ function processPings (time, delta) {
   }
 
   // Enable back camera rotations if there are no fishes to click on
-  controls.enableRotate = !anyPingLeft
+  if (!anyEchoLeft) {
+    // console.log('No echoes left pending')
+    controls.enableRotate = true
+
+    if (pingsLeft === 0 && !lost) {
+      onLost()
+    }
+  }
 }
 
 function onFishClicked (fish) {
@@ -355,9 +382,7 @@ function onFishClicked (fish) {
   // See https://stackoverflow.com/a/5767357/38096
   const fishWrapper = animals.find(function (element) { return element.object3D === fish })
   const fishIndex = animals.indexOf(fishWrapper)
-  console.log('Fish index in animals', fishIndex)
   animals.splice(fishIndex, 1)
-  console.log('animals after removal', animals)
 
   // Ensure the echo will not stay visible
   // fish.object3D.visible = false
@@ -365,7 +390,21 @@ function onFishClicked (fish) {
 
   // Ensure we will not react to clicks anymore
   const clickIndex = clickableObjects.indexOf(fish)
-  console.log('Fish index in clickableObjects', clickIndex)
   clickableObjects.splice(clickIndex, 1)
-  console.log('clickableObjects after removal', clickableObjects)
+
+  if (animals.length === 0) {
+    onWon()
+  }
+}
+
+function onLost () {
+  console.log('Lost the game')
+  lost = true
+  infozone.innerHTML = 'Sorry, you lost</br>Reload to retry!'
+}
+
+function onWon () {
+  console.log('Won the game')
+  won = true
+  infozone.innerHTML = 'Congratulations! You won!'
 }

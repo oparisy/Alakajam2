@@ -19,7 +19,7 @@ Dimanche :
 * [Fait] Mécanisme de capture : clic + résolution + retour UI
 * [Fait] Loader basique (pour faire patienter)
 * [Fait] Intro (texte)
-* UI : compteur de pings restant
+* [Fait] UI : compteur de pings restant
 * Effets de son (ping, capture)
 
 Extra (sans ordre particulier) :

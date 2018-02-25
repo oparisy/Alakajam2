@@ -38,3 +38,4 @@
 17h30 Pause
 17h50 Reprise
 19h10 Ecran d'accueil
+19h40 Compteur de pings + conditions de victoire et d'échec
