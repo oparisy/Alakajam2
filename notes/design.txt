@@ -1,0 +1,66 @@
+Inspirations graphiques
+
+Représentation surface de l'eau :
+https://sketchfab.com/models/d64bd7d6ba854d999b286b48e97edb87
+https://sketchfab.com/models/04ec5c42aab5405786fc6552d5eb26af
+https://sketchfab.com/models/42b6aa9ad71745f3a9abf08a187cf003
+https://sketchfab.com/models/ed68f303872344bb854878999bc730c9
+https://sketchfab.com/models/dd5eea3f2f1d436ca317fbdf8d93e7a5
+https://sketchfab.com/models/cfc07b9c69204fffadda1b81c274d90d
+https://sketchfab.com/models/544822285bbe486cafc1580d78a7067d
+https://sketchfab.com/models/34b611f037f041d89e3179f2903ac553
+https://sketchfab.com/models/3658a1d21013448eab56ac27818d9858
+
+Représentation du volume :
+https://sketchfab.com/models/635743a3d894401fa1c190b7af5d2632
+https://sketchfab.com/models/f9d1886940bf4abba5433bf8e33bc116 (+ poissons)
+https://sketchfab.com/models/a543cdb92d50404ea2251a87fa4bc91a (+ poissons, plage)
+https://sketchfab.com/models/39abb5860a584e3fb2ec6cee5ecce2db (!)
+https://sketchfab.com/models/56a7879a985d45a19a1640335ae2c97b
+https://sketchfab.com/models/63c44aa0dded4923b7b51241f25bc67d
+https://sketchfab.com/models/81867afbd30140af9573399fd5e386d4 (+ animation requin)
+https://sketchfab.com/models/3170de495c954285b042c926a34682a5 (plein d'idées, sobre !)
+
+Vectoriel : cf répertoire "références"
+
+Modélisation animaux :
+https://sketchfab.com/models/fbbc6c8fca2e4340bf4fa5006e38360d
+https://sketchfab.com/models/f791893db35147a5bba081c7b04af8db
+
+Concept / gameplay :
+bateau de recherche océanographique
+recherche d'espèces rares/nouvelles via un sonar
+crédits de recherche pour upgrader bateau/équipement
+Mini-jeu de pêche : cliquer pour lancer une sonde, petite animation
+Différents matériels de capture : filet, drone, sous-marin (coûts progressifs)
+Faire une "campagne" :
+des niveaux avec chacun un objectif de victoire pour passer au suivant
+si victoire atteinte, passage au niveau suivant, sinon perdu
+Alternative : "free mode" avec grinding ?
+
+Design graphique :
+Tester angles camera/proportions dans blender (fera des rendus pour accueil) 
+Volume d'eau transparent rectangulaire / cubique
+Travailler couleur de l'eau / dégradés
+Quelques assets pour décorer / donner une identité "biomes" (débris flottants, icebergs...)
+Légères animation bateau/assets (houle) ; mais restent à la même position
+Surface perturbée par CPU (upload màj hauteurs d'une grille) pour faciliter synchro avec assets
+Pixel shader eau "low poly" sympa si possible (spécularité => blanc)
+Petite fumée (sphères particules) pour cheminée du bateau
+Représentation des animaux marins par rendu "sonar" (particules verdâtres sous l'eau)
+Animation animaux : flocking, random walk
+Probabilité de capture suivant profondeur, espèce, matériel
+Ne montrer les modèles qu'après capture (gif rendus blender ? Modèles glTF avec une seule anim ?)
+Faire évoluer modèle bateau (en avoir plusieurs) pour montrer progression équipement ?
+
+UI (minimale) :
+canvas "fullscreen", sans zone purement d'interface ;
+quelques compteurs/msg en surimpression
+les choix / dialogues se font par popup (div HTML en surimpression)
+Jeu complètement à la souris, pas de pad
+
+Stretch goals :
+Cycle jour/nuit (shaders / couleurs différents, pas les mêmes espèces / probabilités)
+
+Nom :
+"(Seven) Seas Explorer" existe déjà

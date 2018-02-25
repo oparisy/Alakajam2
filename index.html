@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <title>Cats</title>
+    <!-- Some CSS-level fixes to unwanted scrollbars / white canvas border -->
+    <!-- See https://stackoverflow.com/questions/10425310/three-js-full-screen-issue -->
+  <style>
+  canvas {
+    display: block; /* fix necessary to remove space at bottom of canvas */
+  }
+  body {
+    margin: 0px;
+    overflow: hidden;
+  }
+  </style>
+</head>
+
+<body>
+  <script src="js/systemjs/dist/system.js"></script>
+  <script>
+    SystemJS.import('/js/entry.js');
+  </script>
+</body>
+</html>

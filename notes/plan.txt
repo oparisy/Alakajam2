@@ -1,0 +1,41 @@
+Samedi :
+* [Fait] Document de design
+* [Fait] Recherche de références graphiques
+* [Fait] Installation exportateur glTF
+* [Fait] Installation noeuds pour PBR Metallic-Roughness glTF
+* [Fait] Première modé bateau dans Blender
+* [Fait] Exportation glTF, modèle vérifié dans viewer externe
+* [Fait] Importation dans threejs
+* [Fait] Animation surface de l'eau
+* [Fait] Placement au sommet d'un cube transparent bleuté
+
+Dimanche :
+* [Fait] Animation particules sous-marines (random walk)
+* [Fait] Meilleur positionnement initial caméra (fixe ?) / éclairage (reflets valorisent surface)
+* Commit initial
+* Mécanisme de sonar (activé => particules s'affichent temporairement)
+* Mécanisme de capture : clic + résolution + affichage popup
+* Trouver un nom au jeu...
+* UI : compteur de pings restant
+* Particules fumée bateau
+* Accueil (pour choix de la langue)
+* Choix initial difficulté (nombre de pings donnés, nombre de captures à faire)
+* Intro (texte)
+* Effet de son (ping, capture)
+* Loader basique (pour faire patienter)
+
+Extra (sans ordre particulier) :
+* Améliorer temps de chargement
+* Intro par animation initiale caméra
+* UI : compteur de crédits
+* Ciel / background
+* Dégradé eau (pour donner sensation de profondeur)
+* UI upgrade (via un bouton => popup en overlay ?)
+* Assets surface (exploiter normale eau pour les animer ?)
+* Animation particules (flock)
+* Campagne
+* Faire évoluer modèle bateau ?
+* Cycle jour/nuit ?
+* Pixel shader eau
+* Objectifs (cases se cochant à la SC)
+* gifs animés / modèles supplémentaires pour vignettes espèces

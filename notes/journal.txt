@@ -1,0 +1,111 @@
+24/02/2017 (samedi)
+Installé chez Rémi à 10h (plan de travail, écran, Wifi)
+Pas de tentative de connexion à mon VPN (j'utisirerai ce projet et Google Keep le cas échéant)
+Framework : threejs, javascript, rollup
+rollup devrait m'éviter les soucis de packaging de modèles rencontrés avec webpack sur LD39
+javascript pour faciliter la transposition d'exemples threejs (le portage vers TS est facile,
+mais pas toujours la résolution des problèmes d'import/signatures)
+
+Thème Alakajam2 : "You can't see everything"
+
+Conception du jeu (recherches graphiques, gameplay) mise en place dans "design.txt"
+
+Script d'exportation glTF installé (cf.https://github.com/KhronosGroup/glTF-Blender-Exporter/tree/master/scripts)
+
+Installation noeuds pour PBR "Metallic-Roughness" : permettra un rendu glTF / threejs proche de celui de cycles (idéalement...)
+Doc : https://github.com/KhronosGroup/glTF-Blender-Exporter/blob/master/docs/user.md
+Utilisation mode "append" pour figer une version des noeuds et assurer que le .blend ne sera pas cassé
+Il y a aussi des noeuds "Emissive" et "Fresnel", ce sera peut-être intéressant à ajouter à la scène
+=> Non : il y a au moins une option "Emissive" dans le groupe de noeuds, donc il devrait suffire
+
+Test scène basique (cube métallique), export gltf, vue dans https://gltf-viewer.donmccurdy.com/ : OK ;
+il faut juste penser à faire un drag&drop simultané du .bin en même temps que le .gltf
+L'export en .glb ne présente pas cette contrainte => à privilégier
+
+Modé / application matériaux PBR habituelle, par contre passé du temps sur les couleurs de matériaux :
+pour voir la couleur une fois exporté en glTF, il faut utiliser un matériau non métallique et
+"BaseColorFactor" (et pas BaseColor !). On peut se référer à l'exemple "Suzanne" de la doc de l'exporteur
+
+Galère pour faire charger le loader GLTFLoader dans mon boilerplate rollup
+=> suivi de https://discourse.threejs.org/t/rollup-build-setup-to-import-glsl-files-and-three-js-examples/93
+(cf. "Importing example files as modules")
+Trop compliqué à mettre au point... Utilisation de https://www.npmjs.com/package/three-gltf2-loader
+Je n'arrive pas à le faire fonctionner avec rollup
+
+Il y a vraiment un souci de fond : https://github.com/mrdoob/three.js/issues/9562
+J'ai probablement besoin de https://github.com/rollup/rollup-plugin-commonjs ou quelque chose de ce genre
+(et d'approfondir rollup)
+
+Sujet du chargement des loaders détaillé ici :
+https://github.com/mrdoob/three.js/issues/12416
+
+=> je laisse tomber rollup (trop compliqué avec threejs et ses "examples")
+
+Je tente de revenir à l'archi de LD35 (browserify) ce qui me permettra de faire des require()
+et d'utiliser les "astuces" permettant d'accéder aux loaders
+
+Browserify pénible, je n'arrive pas à lui faire recharger facilement les bundles màj
+
+Je tente SystemJS pour simplifier l'équation... Plus de bundler (ni npm), mais toujours des modules...
+
+OK, fonctionne, et itérations suffisamment rapides contrairement à browserify
+Modèle chargé ! Gros souci d'éclairage et de matériau par contre (même si les couleurs sont là)
+Essai sans ajout lumière et caméra embarquées dans le modèle => même problème
+
+On va essayer avec la méthode d'éclairage de l'exemple glTF threejs
+(d'autant que le code est plus agréable que celui de mon boilerplate)
+=> j'adapte l'exemple "helmet", puis j'y substitue mon modèle
+
+Portage sans difficulté de l'exemple "helmet" (testable à http://127.0.0.1:8000/webgl_loader_gltf.html)
+
+Lorsque j'y charge mon modèle de bateau, je perds les features PBR ?
+(pourtant le casque en a, et elles apparaissaient pour mon bateau dans https://gltf-viewer.donmccurdy.com/)
+(Au passage ce viewer est en browserify et propose même electron ; à étudier ?)
+=> Non, elles sont simplement discrètes (doit dépendre de la map)
+
+Mise à jour surface de l'eau : mécanismes threejs expliqués dans :
+https://threejs.org/docs/#manual/introduction/How-to-update-things
+
+Animer une partie des vertices d'une "Geometry" est probablement le plus simple
+https://threejs.org/examples/#webgl_geometry_dynamic fournit un exemple (avec de l'eau ?)
+On peut adapter cet exemple à nos besoins (supprimer texture, baisser résolution)
+
+=> c'est fait. Ne rame pas trop, bon rendu en lowpoly (mais il manque du fresnel, l'eau manque de contraste)
+
+Amélioration rendu surface de l'eau : flatshading (permet de bien voir les mouvements),
+et les bords ne bougent plus (permettra jointure avec bordure "verticale" du volume d'eau)
+
+Volume d'eau ajouté : opacité partielle, mais sans double face (trop d'artefacts de transparence)
+La jointure avec la surface se fait en utilisant un matériau complètement transparent pour les triangles du dessus
+
+25/02/2018 (Dimanche)
+Reprise reposé à 8h ; j'ai pris le temps de me reposer
+Des idées pour l'implémentation du sonar (hypothèses simplificatrices) et l'introduction du jeu
+("cinématique" avec texte + déplacements caméra, qu'on verrouille ensuite)
+
+Tri fait dans le plan : mode campagne passé en stretch goal, on passe en highscore / collection
+(cf. jeu crabe Arthur)
+
+J'avais des conflits pénibles entre le linter et le formattage automatique de Visual Studio
+=> passer option "editor.formatOnSave": false dans les préférence produit corrige le problème
+(laisse le module "JavaScript Standard Style" faire son travail)
+Mais bouzille le positionnement des commentaires :(
+
+Avec cette configuration cela fonctionne (on a l'opportunité de replacer les commentaires,
+"standard" ne le fait pas) :
+    "standard.autoFixOnSave": true,
+    "standard.trace.server": "off",
+    "standard.run": "onType",
+    "editor.formatOnSave": false,
+    "editor.tabSize": 2,
+    "editor.detectIndentation": false,
+
+Random walk + rendu sous forme de spheres fait. Rend bien, mais il a fallu supprimer le
+background et limiter la transparence (sinon pas assez de contraste)
+Tentative de fog : trop compliqué à ne placer que sur ces éléments (il faut reconfigurer
+tous les matériaux de la scène)
+
+Verrouillage et positionnement caméra fait. Il y a tout ce qu'il faut dans OrbitControls
+
+Publication github : création d'un projet avec LICENCE
+Puis Settings > GitHub Pages > Source > master branch

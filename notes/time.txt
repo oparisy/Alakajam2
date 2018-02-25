@@ -1,0 +1,29 @@
+24/02/2018 (Samedi)
+10h00 Matériel installé
+11h00 Première prise de notes gameplay et rendu
+11h45 Design terminé
+12h15 Exporteur glTF et noeuds PBR installés, cube métallique exporté avec succès
+12h15 Pause
+13h15 Reprise
+15h00 Bateau modélisé, exportation glTF avec matériaux PBR OK dans viewer web
+15h00 Pause
+15h15 Reprise
+16h45 1h30 passée sur rollup+GLTFLoader... pause
+17h00 Je creuse pour ne pas avoir à me passer de npm+rollup...
+17h15 Abandon rollup
+18h00 Pas de succès avec Browserify
+18h30 Modèle chargé avec SystemJS, hors npm
+19h00 Exemple "helmet" porté vers SystemJS
+19h30 Intégration bateau au code "helmet" décente (lumière, échelle)
+19h30 Début travail sur la surface de l'eau
+20h40 Surface OK ; pause
+21h40 Reprise
+23h00 Volume d'eau placé, jointure avec surface faite
+23h00 Fin de journée
+
+25/02/2018 (Dimanche)
+09h00 Reprise
+10h25 Random walk + rendu échos fait
+11h00 Positionnement et verouillage caméra fait. Fix scrollbars canvas
+11h00 Pause
+11h45 Reprise
