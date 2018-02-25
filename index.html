@@ -21,7 +21,11 @@
 <body>
   <script src="js/systemjs/dist/system.js"></script>
   <script>
-    SystemJS.import('js/entry.js');
+    // Required for github-pages
+    SystemJS.config({
+      baseURL: '/Alakajam2'
+    });
+    SystemJS.import('/js/entry.js');
   </script>
 </body>
 </html>
