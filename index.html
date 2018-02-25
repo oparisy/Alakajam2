@@ -5,17 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
   <title>Ocean Scanner</title>
-    <!-- Some CSS-level fixes to unwanted scrollbars / white canvas border -->
-    <!-- See https://stackoverflow.com/questions/10425310/three-js-full-screen-issue -->
-  <style>
-  canvas {
-    display: block; /* fix necessary to remove space at bottom of canvas */
-  }
-  body {
-    margin: 0px;
-    overflow: hidden;
-  }
-  </style>
+  <link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -27,8 +17,24 @@
       SystemJS.config({
         baseURL: '/Alakajam2'
       });
+      // Used to hide dev FPS counter
+      document.isProduction = true
     };
     SystemJS.import('js/entry.js');
   </script>
+
+  
+
+  <!-- Absolutely positionned DOM background div -->
+  <div id="root">
+
+    <!-- Hidden as soon as the main game loop starts -->
+    <div id="loader">
+      <div>Loading... Please be patient...</div>
+    </div>
+
+    <!-- In-game informations -->
+    <div id="infozone">In-game informations</div>
+</div>
 </body>
 </html>

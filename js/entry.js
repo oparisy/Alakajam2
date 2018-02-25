@@ -38,7 +38,7 @@ var waterSize = 10
 var surfResolution = 8 // "11" is nice, too
 var surfaceWaterColor = 0x0044ff
 
-const numFishes = 15
+const initNumFishes = 15
 const echoColor = 0x9fff00
 
 var clock = new THREE.Clock()
@@ -50,12 +50,20 @@ var clickableObjects = []
 
 var boatObjects = []
 
+// HTML UI
+var infozone
+
 init()
 animate()
 
 function init () {
   container = document.createElement('div')
   document.body.appendChild(container)
+
+  // Remove the "loading..." text
+  document.getElementById('loader').remove()
+
+  infozone = document.getElementById('infozone')
 
   scene = new THREE.Scene()
   // scene.background = envMap
@@ -153,7 +161,7 @@ function init () {
 
   // Some fishes
   animals = []
-  for (let i = 0; i < numFishes; i++) {
+  for (let i = 0; i < initNumFishes; i++) {
     const initialPos = pickRandomPosition(domain)
     // console.log('initialPos', initialPos)
     const speed = 0.1 * (1 + Math.random())
@@ -171,7 +179,7 @@ function init () {
     animals.push(new AnimalWrapper(animal, sphere))
   }
 
-  renderer = new THREE.WebGLRenderer({ antialias: true })
+  renderer = new THREE.WebGLRenderer({ antialias: true /*, alpha: true */ })
   renderer.setPixelRatio(window.devicePixelRatio)
   renderer.setSize(window.innerWidth, window.innerHeight)
   renderer.gammaOutput = true
@@ -182,9 +190,11 @@ function init () {
   document.addEventListener('mousedown', onDocumentMouseDown, false)
   document.addEventListener('touchstart', onDocumentTouchStart, false)
 
-  // stats
-  stats = new Stats()
-  container.appendChild(stats.dom)
+  // FPS stats (only locally)
+  if (!document.isProduction) {
+    stats = new Stats()
+    container.appendChild(stats.dom)
+  }
 }
 
 function onWindowResize () {
@@ -199,7 +209,14 @@ function animate () {
   requestAnimationFrame(animate)
 
   render()
-  stats.update()
+
+  if (stats !== undefined) {
+    stats.update()
+  }
+
+  // Update DOM UI
+  infozone.innerHTML = ''
+  infozone.innerHTML += 'Fishes Left: ' + animals.length
 }
 
 function render () {
@@ -231,7 +248,7 @@ function updateWaterSurface (time) {
 }
 
 function updateAnimalsPosition (time) {
-  for (let i = 0; i < numFishes; i++) {
+  for (let i = 0; i < animals.length; i++) {
     const current = animals[i]
     current.animal.animate(time)
     current.object3D.position.copy(current.animal.position)
@@ -297,13 +314,17 @@ function onBoatClicked () {
     animals[i].pingTime = time + echoDelay
     animals[i].pingIntensity = echoIntensity
   }
+
+  // Disable orbit rotations (we wan to click on fishes, not move the camera!)
+  controls.enableRotate = false
 }
 
 function processPings (time, delta) {
+  let anyPingLeft = false
   for (let i = 0; i < animals.length; i++) {
     let animal = animals[i]
 
-        // Was a new ping received?
+    // Was a new ping received?
     if (animal.pingTime <= time) {
       console.log('Fish received a ping')
       animal.intensity = Math.max(1, animal.intensity + animal.pingIntensity)
@@ -314,18 +335,40 @@ function processPings (time, delta) {
 
     if (animal.intensity > 0) {
       // Decrease echo intensity since last draw
-      animal.intensity -= 1 * delta
+      animal.intensity -= 0.5 * delta
 
       // Update the material opacity to simulate ping intensity
       animal.object3D.material.opacity = animal.intensity
+
+      anyPingLeft = true
     } else {
       // Avoid the exploitation of a transparency behaviour
       // where near-surface fishes appear black when fully transparent
       animal.object3D.visible = false
     }
   }
+
+  // Enable back camera rotations if there are no fishes to click on
+  controls.enableRotate = !anyPingLeft
 }
 
 function onFishClicked (fish) {
   console.log('Fish clicked', fish)
+
+  // See https://stackoverflow.com/a/5767357/38096
+  const fishWrapper = animals.find(function (element) { return element.object3D === fish })
+  const fishIndex = animals.indexOf(fishWrapper)
+  console.log('Fish index in animals', fishIndex)
+  animals.splice(fishIndex, 1)
+  console.log('animals after removal', animals)
+
+  // Ensure the echo will not stay visible
+  // fish.object3D.visible = false
+  scene.remove(fish)
+
+  // Ensure we will not react to clicks anymore
+  const clickIndex = clickableObjects.indexOf(fish)
+  console.log('Fish index in clickableObjects', clickIndex)
+  clickableObjects.splice(clickIndex, 1)
+  console.log('clickableObjects after removal', clickableObjects)
 }

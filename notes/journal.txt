@@ -117,3 +117,9 @@ Il a fallut ajouter un élément de configuration à SystemJS.config, mais seule
 Détection de clics sans soucis (fourni par threejs)
 
 Ping : partie mathématique simple. Utilisation de la transparence pour le rendu => OK
+
+UI : div en placement absolu, puis layout par marges. J'ai vite renoncé à flexbox, et à maîtriser le z-index
+
+Ajout de la suppression des poissons cliqués et d'un compteur de poissons
+
+Améliorations UI diverses, message de chargement

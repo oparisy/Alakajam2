@@ -1,0 +1,39 @@
+/* Some CSS-level fixes of unwanted scrollbars / white canvas border */
+/* See https://stackoverflow.com/questions/10425310/three-js-full-screen-issue */
+
+canvas {
+  display: block; /* fix necessary to remove space at bottom of canvas */
+  z-index: -10;
+}
+
+body {
+  margin: 0px;
+  overflow: hidden;
+  background: black;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  font-family: Sans-Serif;
+  font-size: 28px;
+  margin-left: 16px;
+}
+
+#infozone {
+  margin-top:100px;
+  color: mediumseagreen
+}
+
+#loader {
+  height: 100%;
+  font-size: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: steelblue;
+}

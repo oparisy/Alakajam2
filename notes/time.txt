@@ -32,3 +32,6 @@
 13h15 Détection clics sur bateau et poissons ; pause
 13h30 Reprise
 15h00 Rendu ping fonctionne ; pause
+15h45 Reprise
+15h55 Cacher compteur FPS en prod, externalisation CSS
+17h30 Suppression poissons cliqués, UI HTML, message de chargement

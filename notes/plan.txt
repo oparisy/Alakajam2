@@ -15,12 +15,13 @@ Dimanche :
 * [Fait] Commit initial
 * [Fait] Trouver un nom au jeu... "Ocean Scanner"
 * [Fait] Mécanisme de sonar (activé => particules s'affichent temporairement)
-* Mécanisme de capture : clic + résolution + affichage popup
+* [Fait] Cacher compteur FPS si on est en prod
+* [Fait] Mécanisme de capture : clic + résolution + retour UI
+* [Fait] Loader basique (pour faire patienter)
 * UI : compteur de pings restant
 * Accueil (pour choix de la langue)
 * Choix initial difficulté (nombre de pings donnés, nombre de captures à faire)
 * Intro (texte)
-* Loader basique (pour faire patienter)
 * Effets de son (ping, capture)
 
 Extra (sans ordre particulier) :
