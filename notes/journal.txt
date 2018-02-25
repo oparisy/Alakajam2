@@ -109,3 +109,7 @@ Verrouillage et positionnement caméra fait. Il y a tout ce qu'il faut dans Orbi
 
 Publication github : création d'un projet avec LICENCE
 Puis Settings > GitHub Pages > Source > master branch
+
+Galéré avec le préfixe d'URL ajouté par github-pages
+Il a fallut ajouter un élément de configuration à SystemJS.config, mais seulement pour github
+(sinon le test local ne marchait plus) ; cf. index.html pour les détails

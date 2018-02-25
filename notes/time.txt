@@ -24,6 +24,8 @@
 25/02/2018 (Dimanche)
 09h00 Reprise
 10h25 Random walk + rendu échos fait
-11h00 Positionnement et verouillage caméra fait. Fix scrollbars canvas
+11h00 Positionnement et verrouillage caméra fait. Fix scrollbars canvas
 11h00 Pause
 11h45 Reprise
+12h45 Upload github + configuration github-pages faits
+12h55 Jeu nommé

@@ -12,10 +12,10 @@ Samedi :
 Dimanche :
 * [Fait] Animation particules sous-marines (random walk)
 * [Fait] Meilleur positionnement initial caméra (fixe ?) / éclairage (reflets valorisent surface)
-* Commit initial
+* [Fait] Commit initial
+* [Fait] Trouver un nom au jeu... "Ocean Scanner"
 * Mécanisme de sonar (activé => particules s'affichent temporairement)
 * Mécanisme de capture : clic + résolution + affichage popup
-* Trouver un nom au jeu...
 * UI : compteur de pings restant
 * Particules fumée bateau
 * Accueil (pour choix de la langue)
