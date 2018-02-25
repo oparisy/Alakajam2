@@ -20,7 +20,7 @@
       // Used to hide dev FPS counter
       document.isProduction = true
     };
-    SystemJS.import('js/entry.js');
+    SystemJS.import('js/welcome.js');
   </script>
 
   
@@ -30,11 +30,14 @@
 
     <!-- Hidden as soon as the main game loop starts -->
     <div id="loader">
-      <div>Loading... Please be patient...</div>
+      <div>Game is Loading...</div>
     </div>
+    
+    <!-- The welcome page -->
+    <div id="welcome"></div>
 
     <!-- In-game informations -->
-    <div id="infozone">In-game informations</div>
+    <div id="infozone"></div>
 </div>
 </body>
 </html>

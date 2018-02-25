@@ -123,3 +123,6 @@ UI : div en placement absolu, puis layout par marges. J'ai vite renoncé à flex
 Ajout de la suppression des poissons cliqués et d'un compteur de poissons
 
 Améliorations UI diverses, message de chargement
+
+Ajout page d'accueil. Difficile sans routeur ! D'autant que je n'ai pas réussi à faire marcher
+le plugin SystemJS de chargement de texte (https://github.com/systemjs/plugin-text)

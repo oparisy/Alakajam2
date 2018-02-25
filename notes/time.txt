@@ -35,3 +35,6 @@
 15h45 Reprise
 15h55 Cacher compteur FPS en prod, externalisation CSS
 17h30 Suppression poissons cliqués, UI HTML, message de chargement
+17h30 Pause
+17h50 Reprise
+19h10 Ecran d'accueil

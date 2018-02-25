@@ -60,9 +60,6 @@ function init () {
   container = document.createElement('div')
   document.body.appendChild(container)
 
-  // Remove the "loading..." text
-  document.getElementById('loader').remove()
-
   infozone = document.getElementById('infozone')
 
   scene = new THREE.Scene()

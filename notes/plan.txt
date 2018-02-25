@@ -18,13 +18,13 @@ Dimanche :
 * [Fait] Cacher compteur FPS si on est en prod
 * [Fait] Mécanisme de capture : clic + résolution + retour UI
 * [Fait] Loader basique (pour faire patienter)
+* [Fait] Intro (texte)
 * UI : compteur de pings restant
-* Accueil (pour choix de la langue)
-* Choix initial difficulté (nombre de pings donnés, nombre de captures à faire)
-* Intro (texte)
 * Effets de son (ping, capture)
 
 Extra (sans ordre particulier) :
+* Choix initial difficulté (nombre de pings donnés, nombre de captures à faire)
+* Accueil (pour choix de la langue)
 * Particules fumée bateau
 * Améliorer temps de chargement
 * Intro par animation initiale caméra
