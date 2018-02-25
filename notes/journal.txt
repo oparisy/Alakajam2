@@ -113,3 +113,7 @@ Puis Settings > GitHub Pages > Source > master branch
 Galéré avec le préfixe d'URL ajouté par github-pages
 Il a fallut ajouter un élément de configuration à SystemJS.config, mais seulement pour github
 (sinon le test local ne marchait plus) ; cf. index.html pour les détails
+
+Détection de clics sans soucis (fourni par threejs)
+
+Ping : partie mathématique simple. Utilisation de la transparence pour le rendu => OK

@@ -14,17 +14,17 @@ Dimanche :
 * [Fait] Meilleur positionnement initial caméra (fixe ?) / éclairage (reflets valorisent surface)
 * [Fait] Commit initial
 * [Fait] Trouver un nom au jeu... "Ocean Scanner"
-* Mécanisme de sonar (activé => particules s'affichent temporairement)
+* [Fait] Mécanisme de sonar (activé => particules s'affichent temporairement)
 * Mécanisme de capture : clic + résolution + affichage popup
 * UI : compteur de pings restant
-* Particules fumée bateau
 * Accueil (pour choix de la langue)
 * Choix initial difficulté (nombre de pings donnés, nombre de captures à faire)
 * Intro (texte)
-* Effet de son (ping, capture)
 * Loader basique (pour faire patienter)
+* Effets de son (ping, capture)
 
 Extra (sans ordre particulier) :
+* Particules fumée bateau
 * Améliorer temps de chargement
 * Intro par animation initiale caméra
 * UI : compteur de crédits

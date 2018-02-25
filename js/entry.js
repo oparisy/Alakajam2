@@ -22,6 +22,15 @@ class AnimalWrapper {
   constructor (animal, object3D) {
     this.animal = animal
     this.object3D = object3D
+
+    // Current fish echo energy (a [0..1] value. Because science!)
+    this.intensity = 0
+
+    // Next time a ping will hit a fish
+    this.pingTime = undefined
+
+    // Next ping intensity
+    this.pingIntensity = undefined
   }
 }
 
@@ -30,8 +39,16 @@ var surfResolution = 8 // "11" is nice, too
 var surfaceWaterColor = 0x0044ff
 
 const numFishes = 15
+const echoColor = 0x9fff00
 
 var clock = new THREE.Clock()
+
+var raycaster = new THREE.Raycaster()
+var mouse = new THREE.Vector2()
+
+var clickableObjects = []
+
+var boatObjects = []
 
 init()
 animate()
@@ -44,7 +61,7 @@ function init () {
   // scene.background = envMap
 
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.25, 100)
-  camera.position.set(-11, 6.5, 17)
+  camera.position.set(-11, 8, 17)
   scene.translateY(6)
 
   controls = new THREE.OrbitControls(camera)
@@ -66,9 +83,6 @@ function init () {
     path + 'py' + format, path + 'ny' + format,
     path + 'pz' + format, path + 'nz' + format
   ])
-
-  // Will only apply to fish particles
-  // scene.fog = new THREE.Fog(0x21323c, 5, 10)
 
   light = new THREE.HemisphereLight(0xbbbbff, 0x444422)
   light.position.set(0, 1, 0)
@@ -123,6 +137,8 @@ function init () {
         child.material.envMap = envMap
         // How does THREE.Vector3D work?
         child.scale.x = child.scale.y = child.scale.z = 0.1
+        clickableObjects.push(child)
+        boatObjects.push(child)
       }
     })
 
@@ -139,15 +155,18 @@ function init () {
   animals = []
   for (let i = 0; i < numFishes; i++) {
     const initialPos = pickRandomPosition(domain)
-    console.log('initialPos', initialPos)
+    // console.log('initialPos', initialPos)
     const speed = 0.1 * (1 + Math.random())
     const changeAngleProb = 0.01 * (1 + 2 * Math.random())
     let animal = new Animal(domain, initialPos, speed, changeAngleProb)
 
+    // Note that each fish has a material, so as to represent distinct ping intensities (through opacity)
     var geometry = new THREE.SphereGeometry(0.08, 16, 16)
-    var material = new THREE.MeshBasicMaterial({color: 0x9fff00})
+    var material = new THREE.MeshBasicMaterial({color: echoColor, transparent: true, opacity: 0})
     var sphere = new THREE.Mesh(geometry, material)
     scene.add(sphere)
+
+    clickableObjects.push(sphere)
 
     animals.push(new AnimalWrapper(animal, sphere))
   }
@@ -159,6 +178,9 @@ function init () {
   container.appendChild(renderer.domElement)
 
   window.addEventListener('resize', onWindowResize, false)
+
+  document.addEventListener('mousedown', onDocumentMouseDown, false)
+  document.addEventListener('touchstart', onDocumentTouchStart, false)
 
   // stats
   stats = new Stats()
@@ -182,10 +204,11 @@ function animate () {
 
 function render () {
   var delta = clock.getDelta()
-  var time = clock.getElapsedTime() * 10
+  var time = clock.getElapsedTime()
 
   updateWaterSurface(time)
   updateAnimalsPosition(delta)
+  processPings(time, delta)
 
   surfMesh.geometry.verticesNeedUpdate = true
   surfMesh.geometry.normalsNeedUpdate = true
@@ -203,7 +226,7 @@ function updateWaterSurface (time) {
       continue
     }
 
-    surfGeometry.vertices[i].y = 0.17 * Math.sin(i / 0.5 + (time + i) / 7) - 0.1
+    surfGeometry.vertices[i].y = 0.17 * Math.sin(i / 0.5 + (time * 10 + i) / 7) - 0.1
   }
 }
 
@@ -220,4 +243,89 @@ function pickRandomPosition (box) {
   let y = box.min.y + (box.max.y - box.min.y) * Math.random()
   let z = box.min.z + (box.max.z - box.min.z) * Math.random()
   return new THREE.Vector3(x, y, z)
+}
+
+// Detect scene object clicked. See the "canvas_interactive_cubes.html" sample
+function onDocumentMouseDown (event) {
+  event.preventDefault()
+
+  mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1
+  mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1
+
+  raycaster.setFromCamera(mouse, camera)
+
+  var intersects = raycaster.intersectObjects(clickableObjects)
+  if (intersects.length > 0) {
+    let clicked = intersects[ 0 ].object
+    // console.log('Clicked on', clicked)
+    if (boatObjects.indexOf(clicked) !== -1) {
+      onBoatClicked()
+    } else {
+      onFishClicked(clicked)
+    }
+  }
+}
+
+// Some touch support (not sure the fixed camera/scene is up to it, though)
+function onDocumentTouchStart (event) {
+  event.preventDefault()
+
+  event.clientX = event.touches[0].clientX
+  event.clientY = event.touches[0].clientY
+  onDocumentMouseDown(event)
+}
+
+function onBoatClicked () {
+  console.log('Boat clicked')
+  var time = clock.getElapsedTime()
+
+  // Okay, let's compute what the sonar will detect
+  // (this is an approximation, but fishes do not move fast)
+  const boatPosition = new THREE.Vector3(0, 0, 0)
+  for (let i = 0; i < animals.length; i++) {
+    const fishPosition = animals[i].animal.position
+    const distanceSq = fishPosition.distanceToSquared(boatPosition)
+    const energy = 1 / Math.max(distanceSq, 0.01)
+
+    // Those are arbitrary but work fine for this scene
+    const echoIntensity = Math.min(energy * 10, 1)
+    const echoDelay = Math.sqrt(distanceSq) / 4
+    // console.log('Fish echo intensity', echoIntensity)
+    // console.log('Fish echo delay', echoDelay)
+
+    // Take note of when the ping will reach the fish, and what its intensity will be
+    animals[i].pingTime = time + echoDelay
+    animals[i].pingIntensity = echoIntensity
+  }
+}
+
+function processPings (time, delta) {
+  for (let i = 0; i < animals.length; i++) {
+    let animal = animals[i]
+
+        // Was a new ping received?
+    if (animal.pingTime <= time) {
+      console.log('Fish received a ping')
+      animal.intensity = Math.max(1, animal.intensity + animal.pingIntensity)
+      animal.pingTime = undefined
+      animal.pingIntensity = undefined
+      animal.object3D.visible = true
+    }
+
+    if (animal.intensity > 0) {
+      // Decrease echo intensity since last draw
+      animal.intensity -= 1 * delta
+
+      // Update the material opacity to simulate ping intensity
+      animal.object3D.material.opacity = animal.intensity
+    } else {
+      // Avoid the exploitation of a transparency behaviour
+      // where near-surface fishes appear black when fully transparent
+      animal.object3D.visible = false
+    }
+  }
+}
+
+function onFishClicked (fish) {
+  console.log('Fish clicked', fish)
 }

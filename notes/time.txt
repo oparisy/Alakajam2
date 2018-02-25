@@ -27,5 +27,8 @@
 11h00 Positionnement et verrouillage caméra fait. Fix scrollbars canvas
 11h00 Pause
 11h45 Reprise
-12h45 Upload github + configuration github-pages faits
+12h45 Upload github + configuration github-pages faits (temps perdu sur SystemJS)
 12h55 Jeu nommé
+13h15 Détection clics sur bateau et poissons ; pause
+13h30 Reprise
+15h00 Rendu ping fonctionne ; pause
