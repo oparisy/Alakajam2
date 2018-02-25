@@ -39,3 +39,4 @@
 17h50 Reprise
 19h10 Ecran d'accueil
 19h40 Compteur de pings + conditions de victoire et d'échec
+19h58 Son joué au clic sur le bateau. Dernier commit !

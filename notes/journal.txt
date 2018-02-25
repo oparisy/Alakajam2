@@ -128,3 +128,6 @@ Ajout page d'accueil. Difficile sans routeur ! D'autant que je n'ai pas réussi 
 le plugin SystemJS de chargement de texte (https://github.com/systemjs/plugin-text)
 
 Le jeu peut être gagné et perdu !
+
+Son de sonar créé avec sfxr et joué lors des clics sur le bateau
+=> jeu "complet" (19h57 !)

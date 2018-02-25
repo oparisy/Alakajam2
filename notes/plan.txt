@@ -20,7 +20,7 @@ Dimanche :
 * [Fait] Loader basique (pour faire patienter)
 * [Fait] Intro (texte)
 * [Fait] UI : compteur de pings restant
-* Effets de son (ping, capture)
+* [Fait] Effets de son (ping, capture)
 
 Extra (sans ordre particulier) :
 * Choix initial difficulté (nombre de pings donnés, nombre de captures à faire)

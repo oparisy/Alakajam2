@@ -8,6 +8,8 @@ const Stats = require('js/three/libs/stats.min.js')
 
 const Animal = require('js/animal.js')
 
+var sonarSound = new Audio('sounds/sonar.wav')
+
 if (!Detector.webgl) Detector.addGetWebGLMessage()
 
 var container, stats, controls
@@ -304,6 +306,8 @@ function onBoatClicked () {
     // Does not mean we've lost, we'll let the last echoes vanish first
     return
   }
+
+  sonarSound.play()
 
   var time = clock.getElapsedTime()
 
